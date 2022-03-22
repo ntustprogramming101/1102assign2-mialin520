@@ -21,7 +21,7 @@ final int BUTTON_RIGHT = 392;
 float ghX, ghY, ghRightX, ghRightY, ghLeftX, ghLeftY, ghDownX, ghDownY;
 float ghSpeed = 80;
 float ghW = 80;
-float ghI=0,ghII=0;
+
 
 
 final int lifeW=50;
@@ -107,7 +107,7 @@ void draw() {
     //cabbage
     image(cabbage, cabbageX, cabbageY);
     //groundhog
-    image(gh, ghX+ghI, ghY);
+    image(gh, ghX, ghY);
 
 
     //soldier
@@ -178,22 +178,18 @@ void keyPressed() {
     switch(keyCode) {
     case UP:
       upPressed =true;
-      ghI=-800;
       ghY-=ghSpeed;
       break;
     case DOWN:
       downPressed = true ;
-      ghI=-800;
       ghY+=ghSpeed;
       break;
     case RIGHT:
       rightPressed = true ;
-       ghI=-800;
-      ghX+=ghSpeed;
+     ghX+=ghSpeed;
       break;
     case LEFT:
       leftPressed = true ;
-      ghI=-800;
       ghX-=ghSpeed;
       break;
     }
@@ -205,19 +201,15 @@ void keyReleased() {
     switch(keyCode) {
     case UP:
       upPressed = false;
-      ghI=0;
-      break;
+     break;
     case DOWN:
       downPressed = false ;
-      ghI=0;
       break;
     case RIGHT:
       rightPressed = false ;
-      ghI=0;
       break;
     case LEFT:
       leftPressed = false ;
-      ghI=0;
       break;
     }
   }
