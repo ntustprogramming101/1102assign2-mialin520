@@ -136,36 +136,7 @@ void draw() {
 
 
 
-
-/*if(T==15){
-  image(gh,ghX,ghY);
-   }
-     //groundhog_move
-    if (upPressed && T<15 ) {
-      T++;
-      ghY-=ghSpeed/4;
-      image(ghDown, ghX, ghY);
-    }
-     if (downPressed && T<15 ){
-      T++;
-      ghY += ghSpeed/4;
-      image(ghDown, ghX, ghY);
-    }
-     
-    if (rightPressed) {
-      ghX += ghSpeed/60;
-      image(ghRight, ghX, ghY);
-    }
-    if (leftPressed) {
-      ghX -= ghSpeed/60;
-      image(ghLeft, ghX, ghY);
-    }
-*/
-
-
-
-
-    //Groundhog_limit
+   //Groundhog_limit
     if (ghX+ghW>=width) {
       ghX=width-ghW;
     }
@@ -209,25 +180,21 @@ void keyPressed() {
       upPressed =true;
       ghI=-800;
       ghY-=ghSpeed;
-      image(ghDown,ghX,ghY);
       break;
     case DOWN:
       downPressed = true ;
       ghI=-800;
       ghY+=ghSpeed;
-      image(ghDown,ghX,ghY);
       break;
     case RIGHT:
       rightPressed = true ;
        ghI=-800;
       ghX+=ghSpeed;
-      image(ghRight,ghX,ghY);
       break;
     case LEFT:
       leftPressed = true ;
       ghI=-800;
       ghX-=ghSpeed;
-      image(ghLeft,ghX,ghY);
       break;
     }
   }
