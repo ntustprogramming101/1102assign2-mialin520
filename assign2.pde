@@ -30,7 +30,7 @@ final int cabbageW=80;
 float cabbageX, cabbageY;
 
 
-int animationFrame;
+int T;
 final int GH_IDLE = 0;
 final int GH_LEFT = 1;
 final int GH_RIGHT = 2;
@@ -123,7 +123,7 @@ void draw() {
     //Play
     if (ghX<sdX+sdW && ghX+ghW>sdX && ghY+ghW>sdY && ghY<sdY+sdW-.3) {
         ghState=GH_IDLE;
-        animationFrame=0;
+        T=0;
         ghX = width / 2.0 ;
         ghY = 80;
       I++;
@@ -140,8 +140,8 @@ void draw() {
     }
 
     //groundhog move
-    if (animationFrame<15) {
-      animationFrame++;
+    if (T<15) {
+      T++;
       switch(ghState) {
       case GH_LEFT:
         ghX-=ghSpeed/15.0;
@@ -202,7 +202,7 @@ void draw() {
       if (mousePressed) {
       //groundhog
         ghState=GH_IDLE;
-        animationFrame=0;
+        T=0;
         ghX = width / 2 ;
         ghY = 80;
       //soldier
@@ -224,7 +224,7 @@ void draw() {
 
 void keyPressed() {
   if (ghState == GH_IDLE ) {
-    animationFrame=0;
+    T=0;
     switch(keyCode) {
     case UP:
       ghState=GH_UP;
