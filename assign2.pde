@@ -4,8 +4,6 @@ PImage bg, gh, ghRight, ghLeft, ghDown, life1, life2, life3,
 
 float sdX=0, sdY=0, sdW=80 ;
 
-int T=0;
-
 final int GAME_START = 0;
 final int GAME_RUN = 1;
 final int GAME_OVER = 2;
@@ -32,13 +30,19 @@ final int cabbageW=80;
 float cabbageX, cabbageY;
 
 
+int animationFrame;
+final int GH_IDLE = 0;
+final int GH_LEFT = 1;
+final int GH_RIGHT = 2;
+final int GH_UP = 3;
+final int GH_DOWN = 4;
+int ghState = GH_IDLE;
+
+
 boolean upPressed = false;
 boolean downPressed = false;
 boolean rightPressed = false;
 boolean leftPressed = false;
-
-
-
 
 
 void setup() {
@@ -61,13 +65,14 @@ void setup() {
   restartNormal=loadImage("img/restartNormal.png");
   restartHovered=loadImage("img/restartHovered.png");
 
-  //soldierMoveRandomly
-  sdY = floor(random(2, 6))*80; //160,240,320,400
+  //soldier
+  sdY = floor(random(2, 6))*80;
 
   //cabbage
   cabbageX = floor(random(1, 8))*80;
   cabbageY = floor(random(2, 6))*80;
-
+  
+  //groundhog
   ghX = width / 2 ;
   ghY = 80;
 }
@@ -94,7 +99,7 @@ void draw() {
     //grass
     stroke(124, 204, 25);
     strokeWeight(15);
-    line(0, 160, 640, 160);
+    line(0, 153, 640, 153);
     //life
     image(life1, life1X+lifeI*I, lifeY);
     image(life2, life2X+lifeI*I, lifeY);
@@ -103,12 +108,9 @@ void draw() {
     stroke(255, 255, 0);
     strokeWeight(5);
     fill(253, 184, 19);
-    circle(590, 50, 120);
+    circle(590, 50, 125);
     //cabbage
     image(cabbage, cabbageX, cabbageY);
-    //groundhog
-    image(gh, ghX, ghY);
-
 
     //soldier
     image(soldier, sdX, sdY);
@@ -116,15 +118,18 @@ void draw() {
     if (sdX>=640) {
       sdX=-40;
     }
-
+    
+    
     //Play
-    if (ghX<sdX+sdW && ghX+ghW>sdX && ghY+ghW>sdY && ghY<sdY+sdW) {
-      ghX = width / 2 ;
-      ghY = 80;
+    if (ghX<sdX+sdW && ghX+ghW>sdX && ghY+ghW>sdY && ghY<sdY+sdW-.3) {
+        ghState=GH_IDLE;
+        animationFrame=0;
+        ghX = width / 2.0 ;
+        ghY = 80;
       I++;
     }
     if (ghX<cabbageX+cabbageW && ghX+ghW>cabbageX
-      && ghY+ghW>cabbageY && ghY<cabbageY+cabbageW
+      && ghY+ghW>cabbageY && ghY<cabbageY+cabbageW-.3
       && I<=2 && I>=0) {
       cabbageX=-100;
       cabbageY=-100;
@@ -134,9 +139,47 @@ void draw() {
       gameState = GAME_OVER;
     }
 
+    //groundhog move
+    if (animationFrame<15) {
+      animationFrame++;
+      switch(ghState) {
+      case GH_LEFT:
+        ghX-=ghSpeed/15.0;
+        break;
+      case GH_RIGHT:
+        ghX+=ghSpeed/15.0;
+        break;
+      case GH_DOWN:
+        ghY+=ghSpeed/15.0;
+        break;
+      case GH_UP:
+        ghY-=ghSpeed/15.0;
+        break;
+      }
+    } else {
+      ghState=GH_IDLE;
+    }
+
+    switch(ghState) {
+    case GH_IDLE:
+      image(gh, ghX, ghY);
+      break;
+    case GH_LEFT:
+      image(ghLeft, ghX, ghY);
+      break;
+    case GH_RIGHT:
+      image(ghRight, ghX, ghY);
+      break;
+    case GH_UP:
+      image(ghDown, ghX, ghY);
+      break;
+    case GH_DOWN:
+      image(ghDown, ghX, ghY);
+      break;
+    }
 
 
-   //Groundhog_limit
+    //Groundhog_limit
     if (ghX+ghW>=width) {
       ghX=width-ghW;
     }
@@ -157,12 +200,18 @@ void draw() {
       && mouseY > BUTTON_TOP && mouseY < BUTTON_BOTTOM) {
       image(restartHovered, 248, 360);
       if (mousePressed) {
+      //groundhog
+        ghState=GH_IDLE;
+        animationFrame=0;
         ghX = width / 2 ;
         ghY = 80;
+      //soldier
         sdX=-40;
-        sdY = floor(random(2, 6))*80+2;
+        sdY = floor(random(2, 6))*80;
+      //cabbage
         cabbageX = floor(random(1, 7))*80;
         cabbageY = floor(random(2, 6))*80;
+      //life and state
         I=0;
         gameState = GAME_RUN;
       }
@@ -174,23 +223,20 @@ void draw() {
 }
 
 void keyPressed() {
-  if (key == CODED ) {
+  if (ghState == GH_IDLE ) {
+    animationFrame=0;
     switch(keyCode) {
     case UP:
-      upPressed =true;
-      ghY-=ghSpeed;
+      ghState=GH_UP;
       break;
     case DOWN:
-      downPressed = true ;
-      ghY+=ghSpeed;
+      ghState=GH_DOWN;
       break;
     case RIGHT:
-      rightPressed = true ;
-     ghX+=ghSpeed;
+      ghState=GH_RIGHT;
       break;
     case LEFT:
-      leftPressed = true ;
-      ghX-=ghSpeed;
+      ghState=GH_LEFT;
       break;
     }
   }
@@ -201,7 +247,7 @@ void keyReleased() {
     switch(keyCode) {
     case UP:
       upPressed = false;
-     break;
+      break;
     case DOWN:
       downPressed = false ;
       break;
