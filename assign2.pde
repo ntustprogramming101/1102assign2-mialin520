@@ -121,7 +121,7 @@ void draw() {
     
     
     //Play
-    if (ghX<sdX+sdW && ghX+ghW>sdX && ghY+ghW>sdY && ghY<sdY+sdW-.3) {
+    if (ghX<sdX+sdW && ghX+ghW>sdX && ghY+ghW>sdY+.3 && ghY<sdY+sdW-.3) {
         ghState=GH_IDLE;
         Time=0;
         ghX = width / 2.0 ;
@@ -129,7 +129,7 @@ void draw() {
       I++;
     }
     if (ghX<cabbageX+cabbageW && ghX+ghW>cabbageX
-      && ghY+ghW>cabbageY && ghY<cabbageY+cabbageW-.3
+      && ghY+ghW>cabbageY+.3 && ghY<cabbageY+cabbageW-.3
       && I<=2 && I>=0) {
       cabbageX=-100;
       cabbageY=-100;
@@ -202,7 +202,7 @@ void draw() {
       if (mousePressed) {
       //groundhog
         ghState=GH_IDLE;
-        T=0;
+        Time=0;
         ghX = width / 2 ;
         ghY = 80;
       //soldier
