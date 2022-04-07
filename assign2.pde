@@ -135,7 +135,7 @@ void draw() {
       cabbageY=-100;
       I--;
     }
-    if (I>=3) {
+    if (I>=2) {
       gameState = GAME_OVER;
     }
 
